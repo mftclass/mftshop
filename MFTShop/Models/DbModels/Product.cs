@@ -13,7 +13,9 @@ namespace MFTShop.Models.DbModels
         [MaxLength(30)]
         [MinLength(5)]
         [Required]
+        [Display(Name ="عنوان محصول")]
         public string Title { get; set; }
+        [Display(Name ="تاریخ ایجاد")]
         public DateTime CreationDate { get; set; }
         public DateTime? DisableDate { get; set; }
         public DateTime? RemoveDate { get; set; }
