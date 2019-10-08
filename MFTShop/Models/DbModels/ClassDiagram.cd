@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MFTShop.Models.DbModels.Product">
+    <Position X="3.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAACAAAQAAAAAEAAABAAAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Models\DbModels\Product.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="ProductCategories" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="MFTShop.Models.DbModels.Category">
+    <Position X="3.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAACAAAQAAAAAEAAABAAAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Models\DbModels\Category.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="ProductCategories" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="MFTShop.Models.DbModels.Customer">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAgAAAAAA=</HashCode>
+      <FileName>Models\DbModels\Customer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MFTShop.Models.DbModels.Order">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CEECAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\DbModels\Order.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Customer" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="MFTShop.Models.DbModels.OrderDetail">
+    <Position X="6.5" Y="3.5" Width="1.75" />
+    <AssociationLine Name="Order" Type="MFTShop.Models.DbModels.Order" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.531" Y="3.5" />
+        <Point X="7.531" Y="3.125" />
+        <Point X="8.188" Y="3.125" />
+        <Point X="8.188" Y="1.988" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>QAECAAAAAQAgAAAAAAAAAAAAAAAAAAAAAgAAgAAAAAA=</HashCode>
+      <FileName>Models\DbModels\OrderDetail.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Order" />
+      <Property Name="Product" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="MFTShop.Models.DbModels.ProductCategory">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAACAAAQAAAAAwIAAAgAAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Models\DbModels\ProductCategory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MFTShop.Models.DbModels.Setting">
+    <Position X="0.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Models\DbModels\Setting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

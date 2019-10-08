@@ -19,6 +19,8 @@ namespace MFTShop.Models.DbModels
         public DateTime CreationDate { get; set; }
         public DateTime? DisableDate { get; set; }
         public DateTime? RemoveDate { get; set; }
-        
+        [MaxLength(100)]
+        public string PictureAddress { get; set; }
+        public ICollection<ProductCategory> ProductCategories { get; set; }
     }
 }

@@ -12,6 +12,8 @@ using MFTShop.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MFTShop.Models.DbModels;
+using MFTShop.Services;
 
 namespace MFTShop
 {
@@ -38,7 +40,7 @@ namespace MFTShop
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                    ConnectionString));
-            services.AddDefaultIdentity<IdentityUser>(options => 
+            services.AddDefaultIdentity<Customer>(options => 
             {
                 options.SignIn.RequireConfirmedAccount = false;
                 options.SignIn.RequireConfirmedEmail = false;
@@ -56,6 +58,9 @@ namespace MFTShop
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddTransient<IApplicationDbContext, ApplicationDbContext>();
+            services.AddTransient<ICategoryServices, CategoryServices>();
+            services.AddMvc().AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

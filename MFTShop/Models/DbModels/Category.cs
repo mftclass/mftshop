@@ -9,8 +9,7 @@ namespace MFTShop.Models.DbModels
     public class Category
     {
         public int Id { get; set; }
-        [MaxLength(30)]
-        [MinLength(5)]
+        [StringLength(30,MinimumLength =5)]
         [Required]
         [Display(Name = "عنوان دسته")]
         public string Title { get; set; }
@@ -19,5 +18,7 @@ namespace MFTShop.Models.DbModels
         public DateTime CreationDate { get; set; }
         public DateTime? DisableDate { get; set; }
         public DateTime? RemoveDate { get; set; }
+        [MaxLength(100)]
+        public string PictureAddress { get; set; }
     }
 }
