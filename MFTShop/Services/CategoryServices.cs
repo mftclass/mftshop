@@ -26,6 +26,7 @@ namespace MFTShop.Services
                                                             !c.RemoveDate.HasValue &&
                                                             !c.Prodct.DisableDate.HasValue &&
                                                             !c.Prodct.RemoveDate.HasValue),
+                Id=x.Id,
                 Title = x.Title
             }).ToList();
         }

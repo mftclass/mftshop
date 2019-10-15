@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace MFTShop.Models.ViewModels
 {
-    public class IndexViewModel
+    public class ProductsListViewModel
     {
-        public string PageTitle { get; set; }
-        public List<CategoryViewModel> categoryViewModels { get; set; }
+        public List<ProductViewModel> Products { get; set; }
     }
 }

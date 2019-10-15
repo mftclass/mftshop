@@ -22,5 +22,6 @@ namespace MFTShop.Models.DbModels
         [MaxLength(100)]
         public string PictureAddress { get; set; }
         public ICollection<ProductCategory> ProductCategories { get; set; }
+        public int Price { get; set; }
     }
 }

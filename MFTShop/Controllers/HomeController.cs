@@ -29,7 +29,8 @@ namespace MFTShop.Controllers
         {
             var model = new IndexViewModel()
             {
-                categoryViewModels = categoryServices.GetCategories()
+                categoryViewModels = categoryServices.GetCategories(),
+                PageTitle="دسته‌بندی‌ها"
             };
             return View(model);
         }

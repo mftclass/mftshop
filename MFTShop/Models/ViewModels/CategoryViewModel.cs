@@ -10,6 +10,6 @@ namespace MFTShop.Models.ViewModels
         public string ImageAddress { get; set; }
         public int ProductCount { get; set; }
         public string Title { get; set; }
-
+        public int Id { get; set; }
     }
 }

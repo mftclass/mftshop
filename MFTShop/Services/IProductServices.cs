@@ -5,6 +5,8 @@ namespace MFTShop.Services
 {
     public interface IProductServices
     {
-        List<ProductViewModel> GetProducts(int categoryId);
+        int GetCategoryId(string CategoryName);
+        List<ProductViewModel> GetProducts(int categoryId, bool Deleted = false);
+        List<ProductViewModel> GetProducts(string CategoryName, bool Deleted = false);
     }
 }
