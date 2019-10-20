@@ -16,6 +16,7 @@ namespace MFTShop.Models.DbModels
         [Display(Name ="عنوان محصول")]
         public string Title { get; set; }
         [Display(Name ="تاریخ ایجاد")]
+        public int Price { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime? DisableDate { get; set; }
         public DateTime? RemoveDate { get; set; }
