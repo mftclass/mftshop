@@ -23,8 +23,10 @@ namespace MFTShop.Services
                             !c.DisableDate.HasValue && //not disabled
                             !c.RemoveDate.HasValue && //not deleted
                             !c.Cateory.RemoveDate.HasValue && //not deleted
-                            !c.Cateory.DisableDate.HasValue //not disabled
-                            )
+                            !c.Cateory.DisableDate.HasValue //not disabled                     
+                            )&&
+                            !db.OrderDetails.Any(od => od.Product.Id == x.Id)
+                          
                        )  
                 .Select(x => new ProductViewModel()
                 {
