@@ -9,5 +9,6 @@ namespace MFTShop.Models.ViewModels
     {
         public int Id { get; set; }
         public ICollection<OrderDetailViewModel> Details { get; set; }
+        public int TotalPrice { get; set; }
     }
 }

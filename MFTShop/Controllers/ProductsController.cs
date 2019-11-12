@@ -24,7 +24,7 @@ namespace MFTShop.Controllers
             return View(products);
 
         }
-        public 
+         
 
     }
 }

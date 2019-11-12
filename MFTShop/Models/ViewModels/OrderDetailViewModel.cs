@@ -8,11 +8,9 @@ namespace MFTShop.Models.ViewModels
     public class OrderDetailViewModel
     {
         public int Id { get; set; }
-        public OrderViewModel Order { get; set; }
-        public ProductViewModel Product { get; set; }
-        public decimal UnitPriceBuy { get; set; }
-        public int Quantity { get; set; }
-        public double Discount { get; set; }
-        public double Tax { get; set; }
+        public string ImageAddress { get; set; }
+        public string Title { get; set; }
+        public int Price { get; set; }
+
     }
 }

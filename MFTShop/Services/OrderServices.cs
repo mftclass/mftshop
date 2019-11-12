@@ -1,6 +1,7 @@
 ﻿using MFTShop.Data;
 using MFTShop.Models.DbModels;
 using MFTShop.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,56 +16,127 @@ namespace MFTShop.Services
         {
             db = _db;
         }
-        public OrderViewModel saveOrder(int customerId, int productId)
+        public ProductAddResponseViewModel saveOrder(string Username, int productId, int? OrderId, int quantity = 1)
         {
-            var customer = this.getCustoer(customerId);
-            if (customer != null)
+            var responseModel = new ProductAddResponseViewModel();
+
+            var customer = this.getCustomer(Username);
+            var product = this.getProduct(productId);
+            Order order;
+            if (customer == null)
             {
-                var product = this.getProduct(productId);
-                if (product != null)
-                {
-                    var order = new Order()
-                    {
-                        OrderDate = DateTime.Now,
-                        AmountBuy = product.Price,
-                        Customer = customer
-                    };
-                    db.SaveChanges();
-                    var orederDetail = new OrderDetail()
-                    {
-                        Order = order,
-                        Product = product,
-                        UnitPriceBuy = product.Price,
-                        Tax = 0,
-                        Discount = 0,
-                        Quantity = 1,
-                        CreationDate = DateTime.Now
-                    };
-                    db.SaveChanges();
-                    var detailsList = new List<OrderDetailViewModel>();
-                    detailsList.Add(new OrderDetailViewModel()
-                    {
-                        Id = orederDetail.Id,
-                        UnitPriceBuy = orederDetail.UnitPriceBuy,
-                        Discount = orederDetail.Discount,
-                        Tax = orederDetail.Tax,
-                        Quantity = orederDetail.Quantity
-                    });
-                    return new OrderViewModel()
-                    {
-                        Id = order.Id,
-                        Details = detailsList
-                    };
-                }
-                throw new Exception("Product not found!");
+                responseModel.Message = "Customer is wrong";
+                responseModel.Succeed = false;
+
+                return responseModel;
             }
-            throw new Exception("Custoer not found!");
+
+
+            if (product == null)
+            {
+                responseModel.Message = "Product is wrong";
+                responseModel.Succeed = false;
+
+                return responseModel;
+            }
+
+            if (!OrderId.HasValue)
+            {
+                order = new Order()
+                {
+                    OrderDate = DateTime.Now,
+                    AmountBuy = product.Price,
+                    Customer = customer,
+
+                };
+                db.Orders.Add(order);
+            }
+            else
+            {
+                order = getOrder(OrderId.Value, Username);
+                if (order == null)
+                {
+                    responseModel.Message = "Order is wrong";
+                    responseModel.Succeed = false;
+
+                    return responseModel;
+                }
+            }
+
+
+
+            var orderDetail = new OrderDetail()
+            {
+                Order = order,
+                Product = product,
+                UnitPriceBuy = quantity * product.Price,
+                Tax = 0,
+                Discount = 0,
+                Quantity = quantity,
+                CreationDate = DateTime.Now
+            };
+            db.OrderDetails.Add(orderDetail);
+            db.SaveChanges();
+
+
+            responseModel.Message = "Product added to order";
+            responseModel.Succeed = true;
+            responseModel.orderId = order.Id;
+
+            return responseModel;
+
+
         }
-        private Customer getCustoer(int customerId)
+
+        public OrderViewModel getOrderDetails(int OrderId, string Username)
         {
-            return db.Customers.SingleOrDefault(c => c.Id == customerId.ToString());
+            OrderViewModel responseModel = new OrderViewModel();
+
+
+            var order = getOrder(OrderId, Username, true);
+            if (order == null)
+                return responseModel;
+
+            var details =
+                order.OrderDetails
+                     .Where(x => !x.DeleteDate.HasValue)
+                     .Select(x => new OrderDetailViewModel()
+                     {
+                         Id = x.Id,
+                         ImageAddress = x.Product.PictureAddress,
+                         Price = x.UnitPriceBuy,
+                         Title = x.Product.Title
+                     });
+            responseModel.Details = details.ToList();
+            responseModel.TotalPrice = details.Sum(x => x.Price);
+            responseModel.Id = OrderId;
+
+            return responseModel;
+
+
+
         }
-        private Product getProduct(int productId)
+
+        public Order getOrder(int orderId, string username, bool withIncludes = false, OrderStatusTypes status = OrderStatusTypes.Open)
+        {
+            IQueryable<Order> orders = db.Orders.Where(x => x.Id == orderId &&
+                                                      x.Customer.UserName == username &&
+                                                      x.OrderStatus == status
+                                                     );
+            if (!withIncludes)
+                return orders.SingleOrDefault();
+            else
+                return orders.Include(x => x.OrderDetails)
+                            .ThenInclude(x => x.Product)
+                            .SingleOrDefault();
+        }
+
+        public Customer getCustomer(string Username)
+        {
+            return db.Customers.SingleOrDefault(c => c.UserName == Username);
+
+        }
+        public Product getProduct(int productId)
         {
             return db.Products.SingleOrDefault(p => p.Id == productId && !p.DisableDate.HasValue && !p.RemoveDate.HasValue);
         }

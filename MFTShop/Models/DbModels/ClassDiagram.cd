@@ -3,7 +3,7 @@
   <Class Name="MFTShop.Models.DbModels.Product">
     <Position X="3.25" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QAACAAAQAAAAAEAAABAAAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <HashCode>QAACAAAQAQAAAEAAABABAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
       <FileName>Models\DbModels\Product.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
@@ -13,7 +13,7 @@
   <Class Name="MFTShop.Models.DbModels.Category">
     <Position X="3.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QAACAAAQAAAAAEAAABAAAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <HashCode>QAACAAAQAAAAAEAAABABAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
       <FileName>Models\DbModels\Category.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
