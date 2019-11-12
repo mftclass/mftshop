@@ -1,8 +1,27 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model MFTShop.Models.ViewModels.IndexViewModel
+@{
+    ViewData["Title"] = "صفحه خانه";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+
+
+    <div class="row text-center">
+        <div class="col-sm-12">
+            <h1>@Model.PageTitle</h1>
+        </div>
+        @foreach (var item in Model.categoryViewModels)
+        {
+            <div class="col-sm-6 pb-2">
+                <a href="/Products/CategoryFilter?CategoryId=@item.Id">
+                    <img src="@item.ImageAddress" class="img-thumbnail w-100" />
+                </a>
+                <h2>@item.Title</h2>
+                <p class="form-group">تعداد محصولات این دسته: @item.ProductCount</p>
+                <a asp-action="CategoryFilter" asp-controller="Products" asp-route-CategoryId="@item.Id" class="btn btn-info">مشاهده محصولات</a>
+            </div>
+        }
+
+
+
+    </div>
