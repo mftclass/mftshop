@@ -12,7 +12,7 @@ namespace MFTShop.Controllers
     {
         private readonly IProductServices productServices;
         private readonly IOrderServices orderServices;
-        private string UserName;
+
         public ProductsController(IProductServices productServices, IOrderServices orderServices)
         {
             this.productServices = productServices;
@@ -30,10 +30,11 @@ namespace MFTShop.Controllers
 
         }
         [Produces("application/json")]
-        public IActionResult AddProductToOrder(int productId, int? orderId, int quantity = 1)
+        public IActionResult AddProductToOrder(int productId, int quantity = 1)
         {
-            UserName = User.FindFirstValue(ClaimTypes.Name);
-            var result = orderServices.saveOrder(UserName, productId, orderId, quantity);
+
+            string UserName = User.FindFirstValue(ClaimTypes.Name);
+            var result = orderServices.AddProductToOrder(UserName, productId, quantity);
             return Json(result);
         }
 

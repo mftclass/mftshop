@@ -54,7 +54,9 @@ namespace MFTShop.Areas.Identity.Pages.Account
             [Required]
             [Display(Name = "Username")]
             public string Username { get; set; }
-
+            [Required]
+            [RegularExpression("[\\u0660-\\u0669]{5,10}|[\\u06F0-\\u06F9]{5,10}|[0-9]{5,10}")]
+            public string PostCode { get; set; }
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
@@ -79,7 +81,7 @@ namespace MFTShop.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new Customer { UserName = Input.Username, Email = Input.Email };
+                var user = new Customer { UserName = Input.Username, Email = Input.Email,PostCode=Input.PostCode };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
