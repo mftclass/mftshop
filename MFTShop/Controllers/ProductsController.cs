@@ -23,6 +23,7 @@ namespace MFTShop.Controllers
             var products = productServices.GetProducts(CategoryId);
             return View(products);
 
+
         }
          
 
