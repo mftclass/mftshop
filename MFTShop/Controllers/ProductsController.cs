@@ -30,10 +30,10 @@ namespace MFTShop.Controllers
 
         }
         [Produces("application/json")]
-        public IActionResult AddProductToOrder(int productId, int? orderId, int quantity = 1)
+        public IActionResult AddProductToOrder(int productId, int quantity = 1)
         {
             UserName = User.FindFirstValue(ClaimTypes.Name);
-            var result = orderServices.saveOrder(UserName, productId, orderId, quantity);
+            var result = orderServices.saveOrder(UserName, productId, quantity);
             return Json(result);
         }
 

@@ -10,6 +10,7 @@ namespace MFTShop.Models.DbModels
         Open,
         Boxing,
         Sent,
-        Canseled
+        Canseled,
+        NeedReview
     }
 }

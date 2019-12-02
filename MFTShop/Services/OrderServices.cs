@@ -16,7 +16,7 @@ namespace MFTShop.Services
         {
             db = _db;
         }
-        public ProductAddResponseViewModel saveOrder(string Username, int productId, int? OrderId, int quantity = 1)
+        public ProductAddResponseViewModel saveOrder(string Username, int productId, int quantity = 1)
         {
             var responseModel = new ProductAddResponseViewModel();
 
@@ -40,7 +40,8 @@ namespace MFTShop.Services
                 return responseModel;
             }
 
-            if (!OrderId.HasValue)
+            order = getOrder(Username);
+            if (order == null)
             {
                 order = new Order()
                 {
@@ -51,19 +52,6 @@ namespace MFTShop.Services
                 };
                 db.Orders.Add(order);
             }
-            else
-            {
-                order = getOrder(OrderId.Value, Username);
-                if (order == null)
-                {
-                    responseModel.Message = "Order is wrong";
-                    responseModel.Succeed = false;
-
-                    return responseModel;
-                }
-            }
-
-
 
             var orderDetail = new OrderDetail()
             {
@@ -117,18 +105,37 @@ namespace MFTShop.Services
 
         }
 
-        public Order getOrder(int orderId, string username, bool withIncludes = false, OrderStatusTypes status = OrderStatusTypes.Open)
+        public Order getOrder(string username, int? orderId = null, OrderStatusTypes? status = OrderStatusTypes.Open, bool withIncludes = false)
         {
-            IQueryable<Order> orders = db.Orders.Where(x => x.Id == orderId &&
-                                                      x.Customer.UserName == username &&
-                                                      x.OrderStatus == status
-                                                     );
-            if (!withIncludes)
-                return orders.SingleOrDefault();
-            else
-                return orders.Include(x => x.OrderDetails)
-                            .ThenInclude(x => x.Product)
-                            .SingleOrDefault();
+            Order order = null;
+            IQueryable<Order> orders = db.Orders.Where(x => x.Customer.UserName == username);
+            if (orderId.HasValue)
+            {
+                orders = orders.Where(x => x.Id == orderId.Value);
+            }
+            if (status.HasValue)
+            {
+                orders = orders.Where(x => x.OrderStatus == status.Value);
+            }
+            if (withIncludes)
+            {
+                orders = orders.Include(x => x.OrderDetails)
+                               .ThenInclude(x => x.Product);
+            }
+            switch (orders.Count())
+            {
+                case 0:
+                    return order;
+                case 1:
+                    return orders.SingleOrDefault();
+                default:
+                    foreach (var item in orders)
+                    {
+                        item.OrderStatus = OrderStatusTypes.NeedReview;
+                    }
+                    db.SaveChanges();
+                    return order;
+            }
         }
 
         public Customer getCustomer(string Username)
