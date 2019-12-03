@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using MFTShop.Models.ViewModels;
 using MFTShop.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,6 +35,18 @@ namespace MFTShop.Controllers
         {
             UserName = User.FindFirstValue(ClaimTypes.Name);
             var result = orderServices.saveOrder(UserName, productId, quantity);
+            return Json(result);
+        }
+
+        [Produces("application/json")]
+        public IActionResult GetProductOfOpenOrder()
+        {
+            UserName = User.FindFirstValue(ClaimTypes.Name);
+
+            var order = orderServices.getOrder(UserName);
+            var orderdetails = orderServices.getOrderDetails(order.Id, UserName);
+
+            var result = orderdetails.Details;
             return Json(result);
         }
 
