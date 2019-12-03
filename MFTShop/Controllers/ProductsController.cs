@@ -13,6 +13,13 @@ namespace MFTShop.Controllers
     {
         private readonly IProductServices productServices;
         private readonly IOrderServices orderServices;
+        string Username
+        {
+            get
+            {
+                return User.FindFirstValue(ClaimTypes.Name);
+            }
+        }
 
         public ProductsController(IProductServices productServices, IOrderServices orderServices)
         {
@@ -33,20 +40,17 @@ namespace MFTShop.Controllers
         [Produces("application/json")]
         public IActionResult AddProductToOrder(int productId, int quantity = 1)
         {
-            UserName = User.FindFirstValue(ClaimTypes.Name);
-            var result = orderServices.saveOrder(UserName, productId, quantity);
+            ProductAddResponseViewModel result = orderServices.saveOrder(Username, productId, quantity);
             return Json(result);
         }
 
         [Produces("application/json")]
         public IActionResult GetProductOfOpenOrder()
         {
-            UserName = User.FindFirstValue(ClaimTypes.Name);
 
-            var order = orderServices.getOrder(UserName);
-            var orderdetails = orderServices.getOrderDetails(order.Id, UserName);
+            var order = orderServices.getOrder(Username);
+            OrderViewModel result = orderServices.getOrderDetails(order.Id, Username);
 
-            var result = orderdetails.Details;
             return Json(result);
         }
 

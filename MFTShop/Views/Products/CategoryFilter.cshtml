@@ -1,32 +1,45 @@
 ﻿@model List<MFTShop.Models.ViewModels.ProductViewModel>
 
 <script>
-    var orderId = 0;
+    window.onload = QueryOrder;
+    function QueryOrder() {
+        var TotalPrice = 0;
+        $.ajax({
+            type: "GET",
+            url: "GetProductOfOpenOrder",
+            datatype: "json",
+            success: function (data) {
+                //alert(JSON.stringify(data));
+                TotalPrice = data.totalPrice;
+                document.getElementById("price").innerText = TotalPrice;
+            },
+            error: function (request, error) {
+                alert(JSON.stringify(request));
+                alert(JSON.stringify(error));
+                return;
+            }
+
+        });
+
+    }
+
+
     function AddToCard(id) {
         //TODO:
         //Must handle cookie information
 
-        var data;
-        if (orderId == 0) {
-            data = {
-                productId: id
-            }
+
+        data = {
+            productId: id,
         }
-        else {
-            data = {
-                productId:id,
-                orderId:orderId
-            }
-        }
-        
+
         $.ajax({
             data: data,
             type: "GET",
             url: "AddProductToOrder",
             datatype: "json",
             success: function (data) {
-                orderId = data.orderId;
-                alert(JSON.stringify(data));
+                QueryOrder();
             },
             error: function (request, error) {
                 alert(JSON.stringify(request));

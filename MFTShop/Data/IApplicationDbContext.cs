@@ -1,11 +1,12 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MFTShop.Models.DbModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace MFTShop.Data
 {
-    public interface IApplicationDbContext
+    public interface IApplicationDbContext:IDisposable
     {
         DbSet<Category> Categories { get; set; }
         DbSet<Customer> Customers { get; set; }

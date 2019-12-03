@@ -9,7 +9,7 @@ namespace MFTShop.Models.DbModels
     {
         public int Id { get; set; }
         public DateTime OrderDate { get; set; }
-        public decimal AmountBuy { get; set; }
+        public int AmountBuy { get; set; }
         public Customer Customer { get; set; }
         public OrderStatusTypes OrderStatus { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; set; }
