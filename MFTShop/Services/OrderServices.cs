@@ -81,7 +81,7 @@ namespace MFTShop.Services
             OrderViewModel responseModel = new OrderViewModel();
 
 
-            var order = getOrder(Username,OrderId,withIncludes:true);
+            var order = getOrder(Username, OrderId, withIncludes: true);
             if (order == null)
                 return responseModel;
 
@@ -103,6 +103,16 @@ namespace MFTShop.Services
 
 
 
+        }
+
+        public int validateOrders()
+        {
+            var orders = db.Orders.Where(o => o.OrderStatus == OrderStatusTypes.Open &&
+                                              o.AmountBuy == o.OrderDetails.Sum(od => od.UnitPriceBuy))
+                                  .ToList();
+            orders.ForEach(o => o.OrderStatus = OrderStatusTypes.NeedReview);
+            db.SaveChanges();
+            return orders.Count;
         }
 
         public Order getOrder(string username, int? orderId = null, OrderStatusTypes? status = OrderStatusTypes.Open, bool withIncludes = false)

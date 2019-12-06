@@ -63,6 +63,7 @@ namespace MFTShop
             services.AddTransient<ICategoryServices, CategoryServices>();
             services.AddTransient<IProductServices, ProductServices>();
             services.AddTransient<IOrderServices, OrderServices>();
+            services.AddHostedService<DatabaseGuard>();
             services.AddMvc().AddRazorRuntimeCompilation();
         }
 
