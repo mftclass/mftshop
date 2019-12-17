@@ -132,7 +132,8 @@ namespace MFTShop.Services
                 orders = orders.Include(x => x.OrderDetails)
                                .ThenInclude(x => x.Product);
             }
-            switch (orders.Count())
+            var ordersList = orders.ToList();
+            switch (ordersList.Count())
             {
                 case 0:
                     return order;

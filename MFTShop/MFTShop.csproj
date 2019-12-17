@@ -5,6 +5,11 @@
     <UserSecretsId>aspnet-MFTShop-3D00AAE3-C208-4EDE-93F6-B9F951BAD387</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20191217165316_m7_orders_decimal_to_int.cs" />
+    <Compile Remove="Data\Migrations\20191217165316_m7_orders_decimal_to_int.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.0.0" />

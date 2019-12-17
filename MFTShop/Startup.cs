@@ -63,7 +63,8 @@ namespace MFTShop
             services.AddTransient<ICategoryServices, CategoryServices>();
             services.AddTransient<IProductServices, ProductServices>();
             services.AddTransient<IOrderServices, OrderServices>();
-            services.AddHostedService<DatabaseGuard>();
+            services.AddTransient<IOrderReportServices, OrderReportServices>();
+            //services.AddHostedService<DatabaseGuard>();
             services.AddMvc().AddRazorRuntimeCompilation();
         }
 
@@ -81,7 +82,7 @@ namespace MFTShop
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseMiddleware<TestMiddleWare>();
+            //app.UseMiddleware<TestMiddleWare>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
