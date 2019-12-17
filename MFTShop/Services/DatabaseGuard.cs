@@ -33,10 +33,8 @@ namespace MFTShop.Services
         private void WatchOrders(object state)
         {
             using var scope = serviceFactory.CreateScope();
-            using var db = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
-
-
-
+            var orderServices = scope.ServiceProvider.GetRequiredService<IOrderServices>();
+            var count = orderServices.validateOrders();
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
