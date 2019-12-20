@@ -60,7 +60,7 @@ namespace MFTShop.Controllers
         }
         public IActionResult CheckOutCallback(PaymentVerificationResponse verifyModel)
         {
-            
+            return View();
 
         }
 
