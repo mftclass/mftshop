@@ -1,5 +1,6 @@
 ﻿using MFTShop.Models.DbModels;
 using MFTShop.Models.ViewModels;
+using System.Collections.Generic;
 
 namespace MFTShop.Services
 {
@@ -11,5 +12,8 @@ namespace MFTShop.Services
         Product getProduct(int productId);
         ProductAddResponseViewModel saveOrder(string Username, int productId, int quantity = 1);
         int validateOrders();
+        OrderViewModel CustomerOrderDetails(int OrderId, string Username);
+        List<Order> CustomerOrders(string username, int? orderId = null, OrderStatusTypes? status = OrderStatusTypes.Open, bool withIncludes = false);
+
     }
 }

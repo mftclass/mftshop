@@ -1,4 +1,5 @@
-﻿using MFTShop.Services;
+﻿using MFTShop.Models;
+using MFTShop.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace MFTShop.Controllers
 {
     public class OrdersController : Controller
     {
-        private readonly IOrderReportServices orderReportServices;
+        private readonly IOrderServices orderReportServices;
         private readonly IOrderServices orderServices;
         string Username
         {
@@ -21,7 +22,7 @@ namespace MFTShop.Controllers
             }
         }
 
-        public OrdersController(IOrderReportServices orderReportServices,IOrderServices orderServices)
+        public OrdersController(IOrderServices orderReportServices,IOrderServices orderServices)
         {
             this.orderReportServices = orderReportServices;
             this.orderServices = orderServices;
@@ -50,18 +51,27 @@ namespace MFTShop.Controllers
         public async Task<IActionResult> CheckOut()
         {
             var totalPrice = orderServices.getOrder(Username).AmountBuy;
-            Payment payment = new Payment(totalPrice);
-            var result = await payment.PaymentRequest("khkhkhk", "https://localhost:10000/Orders/CheckOutCallback");
-            
-            if (result.Status == 100)
-                return Redirect(result.Link);
-            else
-                return Redirect("error");
-        }
-        public IActionResult CheckOutCallback(PaymentVerificationResponse verifyModel)
-        {
-            return View();
 
+            var payment = await new Payment(totalPrice)
+                .PaymentRequest("متن تست موقع خرید",
+                    Url.Action(nameof(CheckOutCallback), "Orders", new { amount = totalPrice }, Request.Scheme));
+            
+            return payment.Status == 100 ? (IActionResult)Redirect(payment.Link) : BadRequest($"خطا در پرداخت. کد خطا:{payment.Status}");
+        }
+        public async Task<IActionResult> CheckOutCallback(int amount, string Authority, string Status)
+        {
+            //توجه
+            //بهتر است که به جای ارسال مبلغ به این متد، در این متد هم مبلغ را محاسبه کنید و سپس ادامه دهید.
+            //****************
+            if (Status == "NOK") return View("Error",new ErrorViewModel() {RequestId="khkhkhkhkh" });
+            //گرفتن تاییدیه پرداخت
+            var verification = await new Payment(amount)
+                .Verification(Authority);
+            //ارسال به صفحه خطا
+            if (verification.Status != 100) return View("Error");
+            //ارسال کد تراکنش به جهت نمایش به کاربر
+            var refId = verification.RefId;
+            return Ok("پرداخت شد");
         }
 
     }

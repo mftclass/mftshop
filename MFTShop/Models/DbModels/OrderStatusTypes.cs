@@ -11,6 +11,11 @@ namespace MFTShop.Models.DbModels
         Boxing,
         Sent,
         Canseled,
-        NeedReview
+        NeedReview,
+        TempEditOpen=1000,
+        TempEditBoxing,
+        TempEditSent,
+        TempEditCanseled,
+        TempEditNeedReview
     }
 }

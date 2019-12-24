@@ -1,6 +1,7 @@
 ﻿using MFTShop.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,13 @@ namespace MFTShop.Services
     {
         Timer timer;
         readonly IServiceScopeFactory serviceFactory;
-        public DatabaseGuard(IServiceScopeFactory serviceFactory)
+        readonly ILogger<DatabaseGuard> logger;
+        bool isRunning;
+        public DatabaseGuard(IServiceScopeFactory serviceFactory,ILogger<DatabaseGuard> logger)
         {
             this.serviceFactory = serviceFactory;
+            this.logger = logger;
+            isRunning = false;
             
         }
         
@@ -32,9 +37,16 @@ namespace MFTShop.Services
 
         private void WatchOrders(object state)
         {
+            if (isRunning)
+                return;
+            isRunning = true;
+
+            logger.LogInformation("Task started");
             using var scope = serviceFactory.CreateScope();
             var orderServices = scope.ServiceProvider.GetRequiredService<IOrderServices>();
             var count = orderServices.validateOrders();
+
+            isRunning = false;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
