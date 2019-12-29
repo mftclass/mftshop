@@ -116,12 +116,12 @@ namespace MFTShop.Services
             orders.AsParallel()
                 .ForAll(o =>
                 {
-                    var detailsPriceSum = o.OrderDetails.Where(od => !od.DeleteDate.HasValue).Sum(odp=>odp.UnitPriceBuy);
-                    if(o.AmountBuy!=detailsPriceSum)
+                    var detailsPriceSum = o.OrderDetails.Where(od => !od.DeleteDate.HasValue).Sum(odp => odp.UnitPriceBuy);
+                    if (o.AmountBuy != detailsPriceSum)
                     {
                         o.AmountBuy = detailsPriceSum;
                         o.OrderStatus = o.OrderStatus + Status_Temp_Distance;
-                       
+
                     }
                 });
             var totalChanged = 0;
@@ -137,6 +137,18 @@ namespace MFTShop.Services
             db.SaveChanges();
             return totalChanged;
 
+        }
+
+        public bool addAuthorityToOrder(string username, string authority, int? orderId = null)
+        {
+            var order = getOrder(username, orderId);
+            if (order == null)
+            {
+                return false;
+            }
+            order.Authority = authority;
+            db.SaveChanges();
+            return true;
         }
 
         public Order getOrder(string username, int? orderId = null, OrderStatusTypes? status = OrderStatusTypes.Open, bool withIncludes = false)

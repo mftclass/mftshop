@@ -56,7 +56,7 @@ namespace MFTShop.Controllers
                 .PaymentRequest("متن تست موقع خرید",
                     Url.Action(nameof(CheckOutCallback), "Orders", new { amount = totalPrice }, Request.Scheme));
             
-            return payment.Status == 100 ? (IActionResult)Redirect(payment.Link) : BadRequest($"خطا در پرداخت. کد خطا:{payment.Status}");
+            return payment.Status == 100 ? (orderServices.addAuthorityToOrder(Username, payment.Authority) ? (IActionResult)Redirect(payment.Link) : BadRequest("خطا در پرداخت")) : BadRequest($"خطا در پرداخت. کد خطا:{payment.Status}");
         }
         public async Task<IActionResult> CheckOutCallback(int amount, string Authority, string Status)
         {
