@@ -46,7 +46,6 @@ namespace MFTShop.Services
                 order = new Order()
                 {
                     OrderDate = DateTime.Now,
-                    AmountBuy = product.Price,
                     Customer = customer,
 
                 };
@@ -64,6 +63,7 @@ namespace MFTShop.Services
                 CreationDate = DateTime.Now
             };
             db.OrderDetails.Add(orderDetail);
+            order.AmountBuy += orderDetail.UnitPriceBuy;
             db.SaveChanges();
 
 
