@@ -1,4 +1,6 @@
 ﻿using MFTShop.Models;
+using MFTShop.Models.DbModels;
+using MFTShop.Models.ViewModels;
 using MFTShop.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -45,14 +47,31 @@ namespace MFTShop.Controllers
         public IActionResult ShowFactor()
         {
             var order = orderServices.getOrder(Username);
-            var model = orderServices.getOrderDetails(order.Id,Username);
+
+            OrderViewModel model;
+            if (order != null)
+            {
+               model= orderServices.getOrderDetails(order.Id, Username);
+            }
+            else
+            {
+                model = new OrderViewModel()
+                {
+                    Details = new List<OrderDetailViewModel>(),
+                    TotalPrice = 0
+                };
+            }
             return View(model);
         }
         public async Task<IActionResult> CheckOut()
         {
-            var totalPrice = orderServices.getOrder(Username).AmountBuy;
 
-            var payment = await new Payment(totalPrice)
+            var totalPrice = orderServices.getOrder(Username)?.AmountBuy;
+
+            if (!totalPrice.HasValue)
+                return View("Error");
+
+            var payment = await new Payment(totalPrice.Value)
                 .PaymentRequest("متن تست موقع خرید",
                     Url.Action(nameof(CheckOutCallback), "Orders", new { amount = totalPrice }, Request.Scheme));
             
@@ -60,18 +79,20 @@ namespace MFTShop.Controllers
         }
         public async Task<IActionResult> CheckOutCallback(int amount, string Authority, string Status)
         {
-            //توجه
-            //بهتر است که به جای ارسال مبلغ به این متد، در این متد هم مبلغ را محاسبه کنید و سپس ادامه دهید.
-            //****************
             if (Status == "NOK") return View("Error",new ErrorViewModel() {RequestId="khkhkhkhkh" });
-            //گرفتن تاییدیه پرداخت
             var verification = await new Payment(amount)
                 .Verification(Authority);
-            //ارسال به صفحه خطا
-            if (verification.Status != 100) return View("Error");
-            //ارسال کد تراکنش به جهت نمایش به کاربر
-            var refId = verification.RefId;
-            return Ok("پرداخت شد");
+          
+            ViewResult response;
+            if (verification.Status != 100 || !orderServices.PayForOrder(amount, Username))
+            {
+                response = View("Error");
+            }
+            else
+            {
+                response = View("Success");
+            }
+            return response;
         }
 
     }

@@ -213,6 +213,22 @@ namespace MFTShop.Services
             }
             return order;
         }
+        public bool PayForOrder(int Amount,string Username)
+        {
+
+            var Order = getOrder(Username);
+            if (Amount >= Order.AmountBuy)
+            {
+                Order.OrderStatus = OrderStatusTypes.Boxing;
+                Order.PaymentDate = DateTime.Now;
+                db.SaveChanges();
+                return true;
+            }
+            else
+                return false;
+
+
+        }
         public OrderViewModel CustomerOrderDetails(int OrderId, string Username)
         {
             OrderViewModel responseModel = new OrderViewModel();

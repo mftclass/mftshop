@@ -15,5 +15,6 @@ namespace MFTShop.Services
         Product getProduct(int productId);
         ProductAddResponseViewModel saveOrder(string Username, int productId, int quantity = 1);
         int validateOrders();
+        bool PayForOrder(int Amount, string Username);
     }
 }

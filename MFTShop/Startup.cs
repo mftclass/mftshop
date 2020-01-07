@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MFTShop.Models.DbModels;
 using MFTShop.Services;
+using MFTShop.Middlewares;
 
 namespace MFTShop
 {
@@ -63,13 +64,16 @@ namespace MFTShop
             services.AddTransient<ICategoryServices, CategoryServices>();
             services.AddTransient<IProductServices, ProductServices>();
             services.AddTransient<IOrderServices, OrderServices>();
+            services.AddTransient<ChangeRequestUrl>();
             services.AddHostedService<DatabaseGuard>();
             services.AddMvc().AddRazorRuntimeCompilation();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseMiddleware<ChangeRequestUrl>();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -89,7 +93,7 @@ namespace MFTShop
 
             app.UseAuthentication();
             app.UseAuthorization();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
