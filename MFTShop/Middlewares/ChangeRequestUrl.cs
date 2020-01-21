@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace MFTShop.Middlewares
 {
+    /// <summary>
+    /// changes requests host name to real domain name.
+    /// <strong>for use in reverse proxy and
+    /// load balancer scenarios</strong>
+    /// </summary>
     public class ChangeRequestUrl : IMiddleware
     {
         public ChangeRequestUrl()
