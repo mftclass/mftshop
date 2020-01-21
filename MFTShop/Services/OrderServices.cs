@@ -84,6 +84,7 @@ namespace MFTShop.Services
             var order = getOrder(Username, OrderId, withIncludes: true);
             if (order == null)
                 return responseModel;
+            
 
             var details =
                 order.OrderDetails
